@@ -1,5 +1,3 @@
-# tria
-
 <div>
 
 <h1>Tria – Contact List Application</h1>
@@ -33,8 +31,8 @@
   <code>cd ../backend && npm install</code></li>
   <li>Start both servers (in separate terminals):<br>
     <ul>
-      <li>Frontend: <code>npm start</code> (or appropriate script in frontend folder)</li>
-      <li>Backend: <code>npm run dev</code> (or the designated backend start script)</li>
+      <li>Frontend: <code>npm run dev</code> (or appropriate script in frontend folder)</li>
+      <li>Backend: <code>npm start</code> (or the designated backend start script)</li>
     </ul>
   </li>
   <li>Open your browser to the frontend (e.g., <code>http://localhost:3000</code> or as configured) and ensure the backend API is reachable.</li>
@@ -83,7 +81,7 @@ tria/
 
 <h2>👤 Author</h2>
 <p><strong>Hrutik Yerole</strong></p>
-<p>GitHub: <a href="https://github.com/hrutikyerole/tria">github.com/hrutikyerole</a></p>
+<p>GitHub: <a href="https://github.com/hrutikyerole">github.com/hrutikyerole</a></p>
 
 <h2>📝 License</h2>
 <p>This project is open-source and available under the MIT Licence (see the <code>LICENSE</code> file).</p>
