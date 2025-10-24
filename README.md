@@ -53,13 +53,14 @@ Both the frontend and backend are deployed and connected to demonstrate real-tim
 tria/
 ├── frontend/
 │   ├── src/
+│   |----- App.jsx
+│   |----- index.js
+│   |----- App.css
 │   ├── public/
 │   ├── package.json
 │   └── …
 └── backend/
-    ├── src/
-    ├── routes/
-    ├── models/
+    ├── server.js
     ├── package.json
     └── …
 </pre>
