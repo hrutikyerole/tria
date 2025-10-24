@@ -83,7 +83,7 @@ tria/
 
 <h2>👤 Author</h2>
 <p><strong>Hrutik Yerole</strong></p>
-<p>GitHub: <a href="https://github.com/hrutikyerole">github.com/hrutikyerole</a></p>
+<p>GitHub: <a href="https://github.com/hrutikyerole/tria">github.com/hrutikyerole</a></p>
 
 <h2>📝 License</h2>
 <p>This project is open-source and available under the MIT Licence (see the <code>LICENSE</code> file).</p>
