@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { UserPlus, Users, Mail, Phone, Search, X } from 'lucide-react';
 import './App.css';
 
-const API_URL = 'http://localhost:4000/contacts';
+const API_URL = 'https://tria-6akbyk07q-hrutiks-projects-3ec64f20.vercel.app/contacts';
 
 function App() {
   const [contacts, setContacts] = useState([]);
