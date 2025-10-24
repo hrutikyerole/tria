@@ -14,7 +14,7 @@
 <h2>🚀 Live Demo</h2>
 <p>
 You can explore the live deployed version of the application here:<br>
-🔗 <a href="https://tria-contact-app.vercel.app/" target="_blank">https://tria-contact-app.vercel.app/</a>
+🔗 <a href="https://tria-y9dq.vercel.app/" target="_blank">https://tria-contact-app.vercel.app/</a>
 </p>
 <p>
 The live demo showcases the complete functionality including contact listing, search, and optional contact addition.
