@@ -3,9 +3,13 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// ✅ Allow only your deployed frontend
 app.use(cors({
-  origin: 'https://tria-y9dq.vercel.app/', credentials: true
+  origin: 'https://tria-y9dq.vercel.app', // frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
+
 app.use(express.json());
 
 let contacts = [
@@ -58,7 +62,7 @@ let contacts = [
 
 // Root endpoint
 app.get('/', (req, res) => {
-  res.send('Contact API is running');
+  res.send('✅ Contact API is running on Vercel!');
 });
 
 // Get all contacts or search
@@ -74,7 +78,7 @@ app.get('/contacts', (req, res) => {
   }
 });
 
-// Add contact
+// Add new contact
 app.post('/contacts', (req, res) => {
   const { name, email, phone, company, job_title } = req.body;
   if (!name || !email) {
@@ -96,5 +100,5 @@ app.post('/contacts', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
