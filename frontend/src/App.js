@@ -10,7 +10,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const fetchContacts = async () => {
     try {
       setIsLoading(true);
