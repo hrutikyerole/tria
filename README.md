@@ -33,8 +33,8 @@
   <code>cd ../backend && npm install</code></li>
   <li>Start both servers (in separate terminals):<br>
     <ul>
-      <li>Frontend: <code>npm run dev</code> (or appropriate script in frontend folder)</li>
-      <li>Backend: <code>npm start</code> (or the designated backend start script)</li>
+      <li>Frontend: <code>npm start</code> (or appropriate script in frontend folder)</li>
+      <li>Backend: <code>npm run dev</code> (or the designated backend start script)</li>
     </ul>
   </li>
   <li>Open your browser to the frontend (e.g., <code>http://localhost:3000</code> or as configured) and ensure the backend API is reachable.</li>
