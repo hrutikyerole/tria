@@ -11,6 +11,16 @@
 <h2>🎯 Overview</h2>
 <p>The goal of this project was to build a contact-list experience where users can view, search, and manage contacts via a clean UI (frontend) backed by a REST API (backend). This application demonstrates separation of concerns, frontend-backend interaction, and componentised development.</p>
 
+<h2>🚀 Live Demo</h2>
+<p>
+You can explore the live deployed version of the application here:<br>
+🔗 <a href="https://tria-contact-app.vercel.app/" target="_blank">https://tria-contact-app.vercel.app/</a>
+</p>
+<p>
+The live demo showcases the complete functionality including contact listing, search, and optional contact addition.
+Both the frontend and backend are deployed and connected to demonstrate real-time interaction.
+</p>
+
 <h2>📦 Tech Stack</h2>
 <ul>
   <li>Frontend: React (with appropriate tooling as per <code>frontend/package.json</code>).</li>
