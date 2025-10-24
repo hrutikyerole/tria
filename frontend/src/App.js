@@ -1,221 +1,173 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { UserPlus, Users, Mail, Phone, Search, X } from 'lucide-react';
+import './App.css';
 
 const API_URL = 'http://localhost:4000/contacts';
 
-const styles = {
-  container: {
-    maxWidth: 420,
-    margin: '40px auto',
-    padding: 32,
-    background: '#fff',
-    borderRadius: 12,
-    boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-    fontFamily: 'Segoe UI, Arial, sans-serif'
-  },
-headingBox: {
-  background: 'linear-gradient(90deg, #2563eb 0%, #60a5fa 100%)',
-  padding: '18px 0',
-  borderRadius: 10,
-  boxShadow: '0 2px 12px rgba(37,99,235,0.08)',
-  marginBottom: 32,
-},
-heading: {
-  textAlign: 'center',
-  margin: 0,
-  color: '#fff',
-  fontSize: 32,
-  fontWeight: 700,
-  letterSpacing: '1px',
-  textShadow: '0 2px 8px rgba(0,0,0,0.10)'
-},
-  form: {
-    display: 'flex',
-    gap: 8,
-    marginBottom: 20
-  },
-  input: {
-    flex: 1,
-    width: '92%',
-    padding: '8px 12px',
-    borderRadius: 6,
-    border: '1px solid #cbd5e1',
-    fontSize: 16
-  },
-  button: {
-    padding: '8px 16px',
-    borderRadius: 6,
-    border: 'none',
-    background: '#2563eb',
-    color: '#fff',
-    fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'background 0.2s'
-  },
-  list: {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0
-  },
-  listItem: {
-    padding: '10px 0',
-    borderBottom: '1px solid #e2e8f0',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  contactName: {
-    fontWeight: 500,
-    color: '#334155'
-  },
-  contactEmail: {
-    color: '#64748b',
-    fontSize: 14
-  },
-  suggestionBox: {
-    background: '#f1f5f9',
-    borderRadius: 6,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-    marginTop: 4,
-    padding: 8,
-    position: 'absolute',
-    zIndex: 10,
-    width: 'calc(100% - 16px)'
-  },
-  suggestionItem: {
-    padding: '6px 8px',
-    cursor: 'pointer',
-    borderRadius: 4,
-    fontSize: 15
-  }
-};
-
 function App() {
   const [contacts, setContacts] = useState([]);
-  const [search, setSearch] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [newName, setNewName] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [showContacts, setShowContacts] = useState(false);
-
-  const fetchContacts = async (name = '') => {
-    const url = name ? `${API_URL}?name=${encodeURIComponent(name)}` : API_URL;
-    const res = await fetch(url);
-    const data = await res.json();
-    setContacts(data);
-  };
-
-  // Fetch suggestions as user types
-  const handleSearchChange = async (e) => {
-    const value = e.target.value;
-    setSearch(value);
-    if (value) {
-      const url = `${API_URL}?name=${encodeURIComponent(value)}`;
-      const res = await fetch(url);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const fetchContacts = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const res = await fetch(API_URL);
       const data = await res.json();
-      setSuggestions(data);
-    } else {
-      setSuggestions([]);
+      setContacts(data);
+    } catch (err) {
+      setError('Failed to fetch contacts');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSuggestionClick = (name) => {
-    setSearch(name);
-    setSuggestions([]);
-    fetchContacts(name);
-    setShowContacts(true);
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    fetchContacts(search);
-    setShowContacts(true);
-    setSuggestions([]);
-  };
-
-  const handleViewContacts = () => {
+  useEffect(() => {
     fetchContacts();
-    setShowContacts(!showContacts);
-    setSuggestions([]);
-  };
+  }, []);
 
-  const handleAddContact = async (e) => {
+  const filteredContacts = useMemo(() => {
+    if (!searchQuery.trim()) return contacts;
+    const query = searchQuery.toLowerCase();
+    return contacts.filter(
+      c =>
+        c.name.toLowerCase().includes(query) ||
+        c.email.toLowerCase().includes(query) ||
+        c.company.toLowerCase().includes(query) ||
+        c.job_title.toLowerCase().includes(query)
+    );
+  }, [contacts, searchQuery]);
+
+  return (
+    <div className="fullscreen-bg">
+      <div className="main-content">
+        <div className="header-enhanced">
+          <div className="header-icon-enhanced">
+            <Users size={40} color="#2563eb" />
+          </div>
+          <div className="header-texts">
+            <h1 className="contact-heading">Contact List</h1>
+            <p className="contact-count">
+              {contacts.length} {contacts.length === 1 ? 'contact' : 'contacts'}
+            </p>
+          </div>
+        </div>
+
+        <div className="search-add-section">
+          <div className="search-box">
+            <Search className="search-icon" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search contacts..."
+            />
+            {searchQuery && (
+              <button className="clear-btn" onClick={() => setSearchQuery('')}>
+                <X size={16} />
+              </button>
+            )}
+          </div>
+
+          <button className="add-btn" onClick={() => setIsModalOpen(true)}>
+            <UserPlus size={18} /> Add Contact
+          </button>
+        </div>
+
+        {error && <div className="error-box">{error}</div>}
+
+        {isLoading ? (
+          <div className="loading">Loading...</div>
+        ) : filteredContacts.length === 0 ? (
+          <div className="no-results">
+            <Search size={40} color="gray" />
+            <h3>No contacts found</h3>
+            <p>Try adjusting your search query.</p>
+          </div>
+        ) : (
+          <div className="contacts-grid">
+            {filteredContacts.map(contact => (
+              <div key={contact.id} className="contact-card">
+                <img src={contact.avatar_url} alt={contact.name} />
+                <div>
+                  <h3>{contact.name}</h3>
+                  <p className="job">{contact.job_title}</p>
+                  <p className="company">{contact.company}</p>
+                  <a href={`mailto:${contact.email}`} className="email">
+                    <Mail size={14} /> {contact.email}
+                  </a>
+                  {contact.phone && (
+                    <div className="phone">
+                      <Phone size={14} /> {contact.phone}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isModalOpen && (
+          <AddContactModal onClose={() => setIsModalOpen(false)} onAdded={fetchContacts} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AddContactModal({ onClose, onAdded }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    job_title: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newName || !newEmail) return;
+    setIsSubmitting(true);
     await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: newName, email: newEmail }),
+      body: JSON.stringify(formData)
     });
-    setNewName('');
-    setNewEmail('');
-    fetchContacts();
-    setShowContacts(true);
+    setFormData({ name: '', email: '', phone: '', company: '', job_title: '' });
+    onAdded();
+    onClose();
+    setIsSubmitting(false);
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.headingBox}>
-        <h2 style={styles.heading}>Contact List</h2>
-      </div>
-      <form onSubmit={handleSearch} style={styles.form}>
-        <div style={{ position: 'relative', width: '100%' }}>
-          <input
-            type="text"
-            placeholder="Search by name"
-            value={search}
-            onChange={handleSearchChange}
-            style={styles.input}
-            autoComplete="off"
-          />
-          {search && suggestions.length > 0 && (
-            <div style={styles.suggestionBox}>
-              {suggestions.map(s => (
-                <div
-                  key={s.id}
-                  style={styles.suggestionItem}
-                  onClick={() => handleSuggestionClick(s.name)}
-                >
-                  {s.name}
-                </div>
-              ))}
-            </div>
-          )}
+    <div className="modal-overlay">
+      <div className="modal-box">
+        <div className="modal-header">
+          <h2>Add New Contact</h2>
+          <button onClick={onClose}><X size={18} /></button>
         </div>
-        <button type="submit" style={styles.button}>Search</button>
-      </form>
-      <form onSubmit={handleAddContact} style={styles.form}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={newName}
-          onChange={e => setNewName(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={newEmail}
-          onChange={e => setNewEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.button}>Add</button>
-      </form>
-      <button style={styles.button} onClick={handleViewContacts}>
-        {showContacts ? 'Hide Contacts' : 'View Contacts'}
-      </button>
-      <br/><br/>
-      {showContacts && (
-        <ul style={styles.list}>
-          {contacts.map(c => (
-            <li key={c.id} style={styles.listItem}>
-              <span style={styles.contactName}>{c.name}</span>
-              <span style={styles.contactEmail}>{c.email}</span>
-            </li>
+        <form onSubmit={handleSubmit} className="modal-form">
+          {['name', 'email', 'phone', 'company', 'job_title'].map((field) => (
+            <input
+              key={field}
+              required={field === 'name' || field === 'email'}
+              type={field === 'email' ? 'email' : 'text'}
+              placeholder={field.replace('_', ' ').toUpperCase()}
+              value={formData[field]}
+              onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
+            />
           ))}
-        </ul>
-      )}
+          <div className="modal-actions">
+            <button type="button" onClick={onClose} className="cancel-btn">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="submit-btn">
+              {isSubmitting ? 'Adding...' : 'Add Contact'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
