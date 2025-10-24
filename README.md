@@ -41,7 +41,7 @@ Both the frontend and backend are deployed and connected to demonstrate real-tim
   <code>cd ../backend && npm install</code></li>
   <li>Start both servers (in separate terminals):<br>
     <ul>
-      <li>Frontend: <code>npm run dev</code> (or appropriate script in frontend folder)</li>
+      <li>Frontend: <code>npm start</code> (or appropriate script in frontend folder)</li>
       <li>Backend: <code>npm start</code> (or the designated backend start script)</li>
     </ul>
   </li>
